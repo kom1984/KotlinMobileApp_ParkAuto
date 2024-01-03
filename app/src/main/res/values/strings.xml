@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">MykotlinMobileapp</string>
+    <string name="app_firstname">Firstname</string>
+    <string name="app_lastname">Lastname</string>
+    <string name="app_email">Email</string>
+    <string name="app_password">Password</string>
+    <string name="app_re_password">Confirm Password</string>
+    <string name="app_register">REGISTER</string>
+
+    <string name="app_text">Hello World!</string>
+    <string name="app_soumettre">Soumettre</string>
+    <string name="app_prenom">Prénom</string>
+    <string name="app_nom">Nom</string>
+
+    <string name="app_login">Login</string>
+    <string name="newUserInfo">IF YOU ARE A NEW USER CLICK</string>
+</resources>
