@@ -28,7 +28,7 @@ class VehiculeAdapter(var con: Context, private val listVehicules:ArrayList<Vehi
 
     override fun onBindViewHolder(holder: VehiculeAdapter.ViewHolder, position: Int) {
 
-    Glide.with(con).load(listVehicules[position].imageVehicule).into(holder.image)
+    Glide.with(con).load(listVehicules[position].imageVehicule).into(holder.image)//glide library pour l'image
         holder.title.text=listVehicules[position].modelVehicule
        /* Picasso.get().load(vehicules[position].photoUrl).into(holder.image)
         holder.title.text = vehicules[position].title*/
