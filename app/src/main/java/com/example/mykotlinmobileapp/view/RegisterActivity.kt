@@ -18,6 +18,7 @@ import com.example.mykotlinmobileapp.databinding.ActivityRegisterBinding
 
 import com.example.mykotlinmobileapp.repository.AuthRepository
 import com.example.mykotlinmobileapp.utils.APIService
+import com.example.mykotlinmobileapp.utils.VibrateView
 import com.example.mykotlinmobileapp.view_model.RegisterActivityViewModel
 import com.example.mykotlinmobileapp.view_model.RegisterActivityViewModelFactory
 import java.lang.StringBuilder
@@ -111,7 +112,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener, View.OnFocus
     }
 
 
-    private fun validateFirstname():Boolean{
+    private fun validateFirstname(shouldUpdateView: Boolean=true,shouldVibrateView: Boolean=true):Boolean{
         var errorMessage : String? = null //Utilser var pour une variable dont la valeur peut changer
         val value :String = mBinding.textFirstname.text.toString() //Utilser val pour une variable dont la valeur change jamais
 
@@ -124,15 +125,17 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener, View.OnFocus
             mBinding.textFirstnameTil.apply {
                 isErrorEnabled = true
                 error = errorMessage
+               if(shouldVibrateView) VibrateView.vibrate(this@RegisterActivity,this)
             }
         }
         return errorMessage == null //return true bcuz error is initialized as true
 
     }
 
-    private fun validateLastname():Boolean{
+    private fun validateLastname(shouldUpdateView: Boolean=true,shouldVibrateView: Boolean=true):Boolean{
         var errorMessage : String? = null //Utilser var pour une variable dont la valeur peut changer
-        val value :String = mBinding.textLastname.text.toString() //Utilser val pour une variable dont la valeur change jamais
+        val value :String = mBinding.textLastname.text.toString()
+        //Utilser val pour une variable dont la valeur change jamais
 
         if(value.isEmpty()){
             errorMessage = "Lastname is required"
@@ -143,13 +146,14 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener, View.OnFocus
             mBinding.textLastnameTil.apply {
                 isErrorEnabled = true
                 error = errorMessage
+                if(shouldVibrateView) VibrateView.vibrate(this@RegisterActivity,this)
             }
         }
         return errorMessage == null //return true bcuz error is initialized as true
 
     }
 
-    private fun validateEmail():Boolean{
+    private fun validateEmail(shouldUpdateView: Boolean=true,shouldVibrateView: Boolean=true):Boolean{
         var errorMessage : String? = null //Utilser var pour une variable dont la valeur peut changer
         val value :String = mBinding.textEmail.text.toString() //Utilser val pour une variable dont la valeur change jamais
 
@@ -165,12 +169,13 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener, View.OnFocus
             mBinding.textEmailTil.apply {
                 isErrorEnabled = true
                 error = errorMessage
+                if(shouldVibrateView) VibrateView.vibrate(this@RegisterActivity,this)
             }
         }
         return errorMessage == null //return true bcuz error is initialized as true
 
     }
-    private fun validatePassword():Boolean{
+    private fun validatePassword(shouldUpdateView: Boolean=true,shouldVibrateView: Boolean=true):Boolean{
         var errorMessage : String? = null //Utilser var pour une variable dont la valeur peut changer
         val value :String = mBinding.textPassword.text.toString() //Utilser val pour une variable dont la valeur change jamais
 
@@ -185,11 +190,12 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener, View.OnFocus
             mBinding.textPasswordTil.apply {
                 isErrorEnabled = true
                 error = errorMessage
+                if(shouldVibrateView) VibrateView.vibrate(this@RegisterActivity,this)
             }
         }
         return errorMessage == null //return true bcuz error is initialized as true
     }
-    private fun validateConfirmPassword():Boolean{
+    private fun validateConfirmPassword(shouldUpdateView: Boolean=true,shouldVibrateView: Boolean=true):Boolean{
         var errorMessage : String? = null //Utilser var pour une variable dont la valeur peut changer
         val value :String = mBinding.textConfirmPassword.text.toString() //Utilser val pour une variable dont la valeur change jamais
 
@@ -197,6 +203,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener, View.OnFocus
             errorMessage = "Confirm Password is required"
         } else if(value.length < 8){
             errorMessage ="Confirm Password must be 8 characters long !"
+
         }
         //display messages in UI
         if(errorMessage != null){
@@ -204,17 +211,19 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener, View.OnFocus
             mBinding.textConfirmPasswordTil.apply {
                 isErrorEnabled = true
                 error = errorMessage
+                if(shouldVibrateView) VibrateView.vibrate(this@RegisterActivity,this)
             }
         }
         return errorMessage == null //return true bcuz error is initialized as true
     }
-    private fun validatePasswordAndConfirmPassword():Boolean{
+    private fun validatePasswordAndConfirmPassword(shouldUpdateView: Boolean=true,shouldVibrateView: Boolean=true):Boolean{
         var errorMessage : String? = null //Utilser var pour une variable dont la valeur peut changer
         val password :String = mBinding.textPassword.text.toString()
         val confirmPassword :String = mBinding.textConfirmPassword.text.toString() //Utilser val pour une variable dont la valeur change jamais
 
         if(password != confirmPassword){
             errorMessage = "Password does not match with confirm password"
+
         }
         //display messages in UI
         if(errorMessage != null){
@@ -222,6 +231,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener, View.OnFocus
             mBinding.textConfirmPasswordTil.apply {
                 isErrorEnabled = true
                 error = errorMessage
+                if(shouldVibrateView) VibrateView.vibrate(this@RegisterActivity,this)
             }
         }
         return errorMessage == null //return true bcuz error is initialized as true
@@ -244,11 +254,13 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener, View.OnFocus
 
     private fun validate() : Boolean{
         var isValid = true
-        if(!validateFirstname()) isValid  = false
-        if(!validateLastname()) isValid  = false
-        if(!validatePassword()) isValid  = false
-        if(!validateConfirmPassword()) isValid  = false
-        if(isValid && !validatePasswordAndConfirmPassword()) isValid  = false
+        if(!validateFirstname(shouldVibrateView = false)) isValid  = false
+        if(!validateLastname(shouldVibrateView = false)) isValid  = false
+        if(!validatePassword(shouldVibrateView = false)) isValid  = false
+        if(!validateConfirmPassword(shouldVibrateView = false)) isValid  = false
+        if(isValid && !validatePasswordAndConfirmPassword(shouldVibrateView = false)) isValid  = false
+
+        if(isValid) VibrateView.vibrate(this,mBinding.cardView)
         return isValid
     }
 
@@ -328,5 +340,9 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener, View.OnFocus
         }
         return false
     }
+}
+
+class VibrationView {
+
 }
 
